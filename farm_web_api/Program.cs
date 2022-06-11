@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using farm_web_api.Data;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApiContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ApiContext") ?? throw new InvalidOperationException("Connection string 'ApiContext' not found.")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("conn_string") ?? throw new InvalidOperationException("Connection string 'ApiContext' not found.")));
 
 // Add services to the container.
 
