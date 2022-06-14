@@ -13,7 +13,5 @@ namespace farm_web_api.models
         public double Price { get; set; }
         public int Quantity { get; set; }
         // 
-        public Farm Farm { get; set; }
-        public int FarmId { get; set; }
     }
 }
