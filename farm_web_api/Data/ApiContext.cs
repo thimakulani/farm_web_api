@@ -14,8 +14,10 @@ namespace farm_web_api.Data
         {
         }
 
-        public DbSet<farm_web_api.models.Customer>? Customer { get; set; }
+        public DbSet<Customer> Customer { get; set; }
 
-        public DbSet<farm_web_api.models.Products>? Products { get; set; }
+        public DbSet<Products> Products { get; set; }
+
+        public DbSet<farm_web_api.models.Category> Category { get; set; }
     }
 }

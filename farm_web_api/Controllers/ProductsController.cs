@@ -25,10 +25,6 @@ namespace farm_web_api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Products>>> GetProducts()
         {
-          if (_context.Products == null)
-          {
-              return NotFound();
-          }
             return await _context.Products.ToListAsync();
         }
 
