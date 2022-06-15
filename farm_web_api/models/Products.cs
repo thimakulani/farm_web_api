@@ -11,7 +11,6 @@ namespace farm_web_api.models
         public string Description { get; set; }
         public double Price { get; set; }
         public int Quantity { get; set; }
-        public Category Category { get; set; }
         [ForeignKey("Category")]
         public int CategoryId { get; set; }
         // 
