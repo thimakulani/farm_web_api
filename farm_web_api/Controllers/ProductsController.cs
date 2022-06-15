@@ -32,10 +32,6 @@ namespace farm_web_api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Products>> GetProducts(int id)
         {
-          if (_context.Products == null)
-          {
-              return NotFound();
-          }
             var products = await _context.Products.FindAsync(id);
 
             if (products == null)
@@ -82,10 +78,6 @@ namespace farm_web_api.Controllers
         [HttpPost]
         public async Task<ActionResult<Products>> PostProducts(Products products)
         {
-          if (_context.Products == null)
-          {
-              return Problem("Entity set 'ApiContext.Products'  is null.");
-          }
             _context.Products.Add(products);
             await _context.SaveChangesAsync();
 
@@ -96,10 +88,6 @@ namespace farm_web_api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProducts(int id)
         {
-            if (_context.Products == null)
-            {
-                return NotFound();
-            }
             var products = await _context.Products.FindAsync(id);
             if (products == null)
             {
@@ -114,7 +102,7 @@ namespace farm_web_api.Controllers
 
         private bool ProductsExists(int id)
         {
-            return (_context.Products?.Any(e => e.ProductId == id)).GetValueOrDefault();
+            return _context.Products.Any(e => e.ProductId == id);
         }
     }
 }

@@ -25,10 +25,10 @@ namespace farm_web_api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomer()
         {
-          if (_context.Customer == null)
-          {
-              return NotFound();
-          }
+            if (_context.Customer == null)
+            {
+                return NotFound();
+            }
             return await _context.Customer.ToListAsync();
         }
 
@@ -36,10 +36,10 @@ namespace farm_web_api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Customer>> GetCustomer(int id)
         {
-          if (_context.Customer == null)
-          {
-              return NotFound();
-          }
+            if (_context.Customer == null)
+            {
+                return NotFound();
+            }
             var customer = await _context.Customer.FindAsync(id);
 
             if (customer == null)
@@ -86,10 +86,10 @@ namespace farm_web_api.Controllers
         [HttpPost]
         public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
         {
-          if (_context.Customer == null)
-          {
-              return Problem("Entity set 'ApiContext.Customer'  is null.");
-          }
+            if (_context.Customer == null)
+            {
+                return Problem("Entity set 'ApiContext.Customer'  is null.");
+            }
             _context.Customer.Add(customer);
             await _context.SaveChangesAsync();
 

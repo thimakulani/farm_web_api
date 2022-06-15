@@ -18,6 +18,6 @@ namespace farm_web_api.Data
 
         public DbSet<Products> Products { get; set; }
 
-        public DbSet<farm_web_api.models.Category> Category { get; set; }
+        public DbSet<Category> Category { get; set; }
     }
 }
