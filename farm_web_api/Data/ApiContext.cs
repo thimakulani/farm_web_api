@@ -13,11 +13,7 @@ namespace farm_web_api.Data
             : base(options)
         {
         }
-
-        public DbSet<Customer> Customer { get; set; }
-
         public DbSet<Products> Products { get; set; }
 
-        public DbSet<Category> Category { get; set; }
     }
 }

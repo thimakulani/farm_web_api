@@ -13,6 +13,6 @@ namespace farm_web_api.models
         public int AddressId { get; set; }
         public Address Address { get; set; }
 
-        public List<Customer> Customer { get; set; }
+        
     }
 }

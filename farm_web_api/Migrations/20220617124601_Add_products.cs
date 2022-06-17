@@ -4,7 +4,7 @@
 
 namespace farm_web_api.Migrations
 {
-    public partial class add_new_prod : Migration
+    public partial class Add_products : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -23,18 +23,7 @@ namespace farm_web_api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.ProductId);
-                    table.ForeignKey(
-                        name: "FK_Products_Category_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Category",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_CategoryId",
-                table: "Products",
-                column: "CategoryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -75,21 +75,9 @@ namespace farm_web_api.Controllers
 
         // POST: api/Products
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPost]
-        //public async Task<ActionResult<Products>> PostProducts(Products products)
-        //{
-        //    _context.Products.Add(products);
-        //    await _context.SaveChangesAsync();
-
-        //    return CreatedAtAction("GetProducts", new { id = products.ProductId }, products);
-        //}
         [HttpPost]
         public async Task<ActionResult<Products>> PostProducts(Products products)
         {
-            if (_context.Products == null)
-            {
-                return Problem("Entity set 'ApiContext.Products'  is null.");
-            }
             _context.Products.Add(products);
             await _context.SaveChangesAsync();
 
