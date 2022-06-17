@@ -13,6 +13,7 @@ namespace farm_web_api.models
         public int Quantity { get; set; }
         [ForeignKey("Category")]
         public int CategoryId { get; set; }
+        public Category Category { get; set; }
         // 
     }
 }

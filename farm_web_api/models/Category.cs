@@ -9,5 +9,6 @@ namespace farm_web_api.models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
+
     }
 }
