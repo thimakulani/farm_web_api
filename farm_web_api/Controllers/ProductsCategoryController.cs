@@ -18,7 +18,7 @@ namespace farm_web_api.Controllers
             _context = context;
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public IEnumerable<Products> Get(int id)
         {
             var data = _context.Products.Where(x => x.CategoryId == id);
