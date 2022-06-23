@@ -28,7 +28,7 @@ namespace farm_web_api.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("login")]
+        [HttpPost]
         public async Task<IActionResult> PostAsync(UserLogin user)
         {
             if (user == null)

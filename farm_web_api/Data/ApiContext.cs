@@ -16,6 +16,7 @@ namespace farm_web_api.Data
         }
         public DbSet<Products> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; } 
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Driver> Drivers { get; set; }
