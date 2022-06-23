@@ -1,39 +1,58 @@
-﻿using farm_web_api.models;
-using Microsoft.AspNetCore.Authorization;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using farm_web_api.Data;
+using farm_web_api.models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
 
 namespace farm_web_api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthenticationController : ControllerBase
+    public class UserLoginsController : ControllerBase
     {
+        private readonly ApiContext _context;
         private IConfiguration _config;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly SignInManager<ApplicationUser> signInManager;
-
-        public AuthenticationController(IConfiguration config, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager)
+        public UserLoginsController(ApiContext context, IConfiguration config, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager)
         {
             _config = config;
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.signInManager = signInManager;
+            this._context = context;
         }
 
+
+        // GET: api/UserLogins
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<UserLogin>>> GetUserLogins()
+        {
+            return null;
+        }
+
+        // PUT: api/UserLogins/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST: api/UserLogins
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> PostAsync(UserLogin user)
+        public async Task<ActionResult<UserLogin>> PostUserLogin(UserLogin user)
         {
             if (user == null)
             {
-                return BadRequest();
+                return NotFound("All fields are required");
             }
             var results = await signInManager.PasswordSignInAsync(user.Username.Trim(), user.Password.Trim(), false, false);
             if (results.Succeeded)
@@ -44,10 +63,9 @@ namespace farm_web_api.Controllers
             }
             else
             {
-                return BadRequest();
+                return NotFound("Username Or Password is incorrect");
             }
         }
-
         private string GenerateToken(ApplicationUser user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -70,11 +88,6 @@ namespace farm_web_api.Controllers
               signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-        [HttpGet]
-        public IActionResult Get()
-        {
-            return Ok("wow");
         }
     }
 }
