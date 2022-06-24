@@ -18,14 +18,14 @@ namespace farm_web_api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserLoginsController : ControllerBase
+    public class AccountController : ControllerBase
     {
         private readonly ApiContext _context;
         private IConfiguration _config;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly SignInManager<ApplicationUser> signInManager;
-        public UserLoginsController(ApiContext context, IConfiguration config, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager)
+        public AccountController(ApiContext context, IConfiguration config, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager)
         {
             _config = config;
             this.userManager = userManager;
@@ -41,7 +41,32 @@ namespace farm_web_api.Controllers
         {
             return null;
         }
-
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<ActionResult> PostUserRegister(UserRegister user)
+        {
+            if(user == null)
+            {
+                return BadRequest("All fields are required");
+            }
+            ApplicationUser applicationUser = new ApplicationUser()
+            {
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.Phone,
+                UserName = user.Username
+            };
+            var results = await userManager.CreateAsync(applicationUser, user.Password);
+            if (results.Succeeded)
+            {
+                return Ok(GenerateToken(applicationUser));
+            }
+            else
+            {
+                return BadRequest(results.Errors);
+            }
+        }
         // PUT: api/UserLogins/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         // POST: api/UserLogins
@@ -52,7 +77,7 @@ namespace farm_web_api.Controllers
         {
             if (user == null)
             {
-                return NotFound("All fields are required");
+                return BadRequest("All fields are required");
             }
             var results = await signInManager.PasswordSignInAsync(user.Username.Trim(), user.Password.Trim(), false, false);
             if (results.Succeeded)
