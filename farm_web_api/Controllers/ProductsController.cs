@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using farm_web_api.Data;
 using farm_web_api.models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace farm_web_api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
