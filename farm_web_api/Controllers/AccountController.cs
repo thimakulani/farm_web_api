@@ -42,7 +42,7 @@ namespace farm_web_api.Controllers
             return null;
         }
         [AllowAnonymous]
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<ActionResult> PostUserRegister(UserRegister user)
         {
             if(user == null)
@@ -72,7 +72,7 @@ namespace farm_web_api.Controllers
         // POST: api/UserLogins
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [AllowAnonymous]
-        [HttpPost]
+        [HttpPost("login")]
         public async Task<ActionResult<UserLogin>> PostUserLogin(UserLogin user)
         {
             if (user == null)
