@@ -24,6 +24,7 @@ namespace farm_web_api.Controllers
         }
 
         // GET: api/Products
+       
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Products>>> GetProducts()
         {
