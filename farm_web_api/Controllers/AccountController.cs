@@ -56,13 +56,15 @@ namespace farm_web_api.Controllers
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 PhoneNumber = user.Phone,
-                UserName = user.Username
+                UserName = user.Username,
+                
             };
             var results = await userManager.CreateAsync(applicationUser, user.Password);
-
+            
             if (results.Succeeded)
             {
                 var _user = await userManager.FindByEmailAsync(user.Email.Trim());
+                await userManager.AddToRoleAsync(_user, user.Role);
                 var response = new AuthResponse
                 {
                     Token = GenerateToken(_user),
@@ -96,6 +98,8 @@ namespace farm_web_api.Controllers
             if (results.Succeeded)
             {
                 var user_data = await userManager.FindByEmailAsync(user.Username);
+                //role = roleManager
+                
                 var token = GenerateToken(user_data);
                 
                 return Ok(token);

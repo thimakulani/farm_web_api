@@ -8,10 +8,12 @@ using Microsoft.AspNetCore.Identity;
 using farm_web_api.models;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using farm_web_api.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApiContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("conn_string") ?? throw new InvalidOperationException("Connection string 'ApiContext' not found.")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("conn_string") ??
+    throw new InvalidOperationException("Connection string 'ApiContext' not found.")));
 
 // Add services to the container.
 builder.Services
@@ -79,6 +81,13 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 var app = builder.Build();
 
+//Create roles
+
+IServiceProvider serviceProvider = builder.Services.BuildServiceProvider();
+await ConfigureRoles.CreateUserRoles(serviceProvider);
+
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -93,3 +102,5 @@ app.UseAuthentication();
 app.MapControllers();
 
 app.Run();
+
+
