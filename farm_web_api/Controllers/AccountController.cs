@@ -13,6 +13,7 @@ using System.Text;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Cryptography;
 
 namespace farm_web_api.Controllers
 {
@@ -37,7 +38,7 @@ namespace farm_web_api.Controllers
 
         // GET: api/UserLogins
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserLogin>>> GetUserLogins()
+        public Task<ActionResult<IEnumerable<UserLogin>>> GetUserLogins()
         {
             return null;
         }
@@ -58,13 +59,25 @@ namespace farm_web_api.Controllers
                 UserName = user.Username
             };
             var results = await userManager.CreateAsync(applicationUser, user.Password);
+
             if (results.Succeeded)
             {
-                return Ok(GenerateToken(applicationUser));
+                var _user = await userManager.FindByEmailAsync(user.Email.Trim());
+                var response = new AuthResponse
+                {
+                    Token = GenerateToken(_user),
+                    ApplicationUser = _user
+                };
+                return Ok(response);
             }
             else
             {
-                return BadRequest(results.Errors);
+                string errors = "";
+                foreach (var item in results.Errors)
+                {
+                    errors += item.Description +"\n";
+                }
+                throw new UnauthorizedAccessException(errors);
             }
         }
         // PUT: api/UserLogins/5
@@ -77,20 +90,32 @@ namespace farm_web_api.Controllers
         {
             if (user == null)
             {
-                return BadRequest("All fields are required");
+                throw new ArgumentNullException(nameof(user));
             }
             var results = await signInManager.PasswordSignInAsync(user.Username.Trim(), user.Password.Trim(), false, false);
             if (results.Succeeded)
             {
                 var user_data = await userManager.FindByEmailAsync(user.Username);
                 var token = GenerateToken(user_data);
+                
                 return Ok(token);
             }
             else
             {
-                return NotFound("Username Or Password is incorrect");
+                throw new UnauthorizedAccessException("Username Or Password is incorrect");
             }
         }
+
+        private string GenerateRefreshToken()
+        {
+            var byteArray = new byte[64];
+            var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(byteArray);
+
+            return Convert.ToBase64String(byteArray);
+           
+        }
+
         private string GenerateToken(ApplicationUser user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -98,7 +123,7 @@ namespace farm_web_api.Controllers
 
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, user.UserName),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.GivenName, user.FirstName),
                 new Claim(ClaimTypes.Surname, user.LastName),
@@ -109,10 +134,15 @@ namespace farm_web_api.Controllers
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
               _config["Jwt:Audience"],
               claims,
-              expires: DateTime.Now.AddMinutes(15),
+              expires: DateTime.Now.AddDays(1),
               signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+    }
+    public class AuthResponse
+    {
+        public string Token { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }
