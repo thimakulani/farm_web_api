@@ -57,6 +57,7 @@ namespace farm_web_api.Controllers
                 LastName = user.LastName,
                 PhoneNumber = user.Phone,
                 UserName = user.Username,
+                RoleName = user.Role,
                 
             };
             var results = await userManager.CreateAsync(applicationUser, user.Password);

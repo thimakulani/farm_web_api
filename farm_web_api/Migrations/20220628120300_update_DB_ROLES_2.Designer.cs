@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using farm_web_api.Data;
 
@@ -11,9 +12,10 @@ using farm_web_api.Data;
 namespace farm_web_api.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    partial class ApiContextModelSnapshot : ModelSnapshot
+    [Migration("20220628120300_update_DB_ROLES_2")]
+    partial class update_DB_ROLES_2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -432,11 +434,6 @@ namespace farm_web_api.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserRolesId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasIndex("UserRolesId");
-
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
@@ -535,15 +532,6 @@ namespace farm_web_api.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("farm_web_api.models.ApplicationUser", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", "UserRoles")
-                        .WithMany()
-                        .HasForeignKey("UserRolesId");
-
-                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("farm_web_api.models.Order", b =>
