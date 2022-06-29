@@ -38,9 +38,9 @@ namespace farm_web_api.Controllers
 
         // GET: api/UserLogins
         [HttpGet]
-        public Task<ActionResult<IEnumerable<UserLogin>>> GetUserLogins()
+        public ActionResult GetUserLogins()
         {
-            return null;
+            return Ok("hi");
         }
         [AllowAnonymous]
         [HttpPost("register")]
