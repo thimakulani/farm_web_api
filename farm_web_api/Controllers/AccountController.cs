@@ -80,7 +80,7 @@ namespace farm_web_api.Controllers
                 {
                     errors += item.Description +"\n";
                 }
-                throw new UnauthorizedAccessException(errors);
+                return Unauthorized(errors);
             }
         }
         // PUT: api/UserLogins/5
@@ -93,7 +93,7 @@ namespace farm_web_api.Controllers
         {
             if (user == null)
             {
-                throw new ArgumentNullException(nameof(user));
+                return BadRequest("All fields are required");
             }
             var results = await signInManager.PasswordSignInAsync(user.Username.Trim(), user.Password.Trim(), false, false);
             if (results.Succeeded)
@@ -107,7 +107,7 @@ namespace farm_web_api.Controllers
             }
             else
             {
-                throw new UnauthorizedAccessException("Username Or Password is incorrect");
+                return Unauthorized("Incorrent username or password");
             }
         }
 
@@ -132,7 +132,7 @@ namespace farm_web_api.Controllers
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.GivenName, user.FirstName),
                 new Claim(ClaimTypes.Surname, user.LastName),
-                //new Claim(ClaimTypes.Role, user.PhoneNumber),
+                new Claim(ClaimTypes.Role, user.RoleName),
                 new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
             };
 
