@@ -37,10 +37,20 @@ namespace farm_web_api.Controllers
 
 
         // GET: api/UserLogins
-        [HttpGet]
-        public ActionResult GetUserLogins()
+        //[Authorize]
+        [HttpGet("User/{id}")]
+        public ActionResult GetUser(string id)
         {
-            return Ok("hi");
+            if(id == null)
+            {
+                return BadRequest("Id is required");
+            }
+            var user = userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound($"User with Id: {id} does not exists");
+            }
+            return Ok(user);
         }
         [AllowAnonymous]
         [HttpPost("register")]
@@ -102,8 +112,12 @@ namespace farm_web_api.Controllers
                 //role = roleManager
                 
                 var token = GenerateToken(user_data);
-                
-                return Ok(token);
+                AuthResponse authResponse = new AuthResponse()
+                {
+                    ApplicationUser = user_data,
+                    Token = token
+                };
+                return Ok(authResponse);
             }
             else
             {
