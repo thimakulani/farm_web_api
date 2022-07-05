@@ -37,7 +37,7 @@ namespace farm_web_api.Controllers
 
 
         // GET: api/UserLogins
-        //[Authorize]
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult> GetUser(string id)
         {
