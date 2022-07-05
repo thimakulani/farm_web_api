@@ -38,14 +38,14 @@ namespace farm_web_api.Controllers
 
         // GET: api/UserLogins
         //[Authorize]
-        [HttpGet("User")]
-        public ActionResult GetUser(string id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetUser(string id)
         {
             if(id == null)
             {
                 return BadRequest("Id is required");
             }
-            var user = userManager.FindByIdAsync(id);
+            var user = await userManager.FindByIdAsync(id);
             if (user == null)
             {
                 return NotFound($"User with Id: {id} does not exists");
