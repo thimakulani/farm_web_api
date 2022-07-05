@@ -38,7 +38,7 @@ namespace farm_web_api.Controllers
 
         // GET: api/UserLogins
         //[Authorize]
-        [HttpGet("User/{id}")]
+        [HttpGet("User")]
         public ActionResult GetUser(string id)
         {
             if(id == null)
