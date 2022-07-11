@@ -14,9 +14,11 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace farm_web_api.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -37,7 +39,6 @@ namespace farm_web_api.Controllers
 
 
         // GET: api/UserLogins
-        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult> GetUser(string id)
         {
