@@ -8,5 +8,6 @@
         public Customer Customer { get; set; }
         public int CustomerId { get; set; }
         public int Status { get; set; }
+        public DateTime DateCreated { get; set; }
     }
 }

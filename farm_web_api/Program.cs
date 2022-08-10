@@ -9,11 +9,12 @@ using farm_web_api.models;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using farm_web_api.Service;
-
+var serverVersion = new MySqlServerVersion(new Version(8, 0, 27));
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApiContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("conn_string") ??
-    throw new InvalidOperationException("Connection string 'ApiContext' not found.")));
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("conn_string"), serverVersion
+        ));
 
 // Add services to the container.
 builder.Services
